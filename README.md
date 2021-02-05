@@ -2,7 +2,7 @@
 
 
 ```diff
-- adicionar resumo do projeto
+- adicionar resumo do projeto :)
 ```
 
 ## Como criar o dataset?
