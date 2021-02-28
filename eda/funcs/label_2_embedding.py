@@ -1,5 +1,6 @@
 def label2Embedding(sentence):
   """ Check if the word of the received sentence is included in the pre-trained word embedding and return it's embedding
+  
   Keywords arguments:
   sentence -- tweet itself
   """
