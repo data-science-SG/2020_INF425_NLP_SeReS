@@ -4,6 +4,14 @@ import pandas as pd
 
 import time
 
+## ------------------- Funções --------------------------------
+
+def cleanText(x):
+    return x.replace('\n', ' ')
+
+## ------------------------------------------------------------
+
+
 ##  ------------------ Configurações Twitter API -------------------------------
 
 #Visualização de dados
@@ -27,8 +35,6 @@ auth = tw.OAuthHandler(API_key, API_secret_key )             # método OAuthHand
 auth.set_access_token(access_token, access_token_secret )    # método "set_access_token" do objeto auth: usa "key" e "secret" (dos 'tokens') 
 api = tw.API(auth, wait_on_rate_limit=True)                  # método API da biblioteca tw: recebe acesso para o uso da API com oobjeto api
 
-print(type(auth),type(api))
-
 ## ----------------------------------------------------------------------------
 
 ## Title
@@ -48,7 +54,7 @@ st.write(algorithm)
 
 ##  Input do usuário
 # Alguns espaços
-empty = ['','','','']
+empty = [''] * 4
 for x in empty:
     st.text(x)
 
@@ -56,47 +62,34 @@ username = st.text_input('Insira o usuário:')
 
 ## Botão de rodar algoritmo
 
-tweets_dataframe = []
+tweets_dataframe = pd.DataFrame()
 
 if (st.button('Executar algoritmo')):
-    #Escolhendo a quantidade de tweets q vou pegar :)
-    num_itens_depre = 600
-    num_itens_sad = 10
 
-    #Quantos tweets do usuário coletar
-    num_tweets_depre = 10
-    num_tweets_sad = 4
-
-    #Mínimo de tweets que o usuário deve ter para entrar no dataset
-    min_tweets = 3
+    qtd_tweets = 10
+    # my_bar = st.progress(0)
+    # for percent_complete in range(tweets_dataframe.size):
+    #     time.sleep(0.1)
+    #     my_bar.progress(percent_complete + 1)
 
     #Exibir os tweets e realizar a pesquisa
-
     filters = "-filter:mentions -filter:retweets -filter:images -filter:native_video -filter:links" #Filtro
     user = 'from:' + username.replace("@", "")
 
-    search_string = user
-
-    search_string
-                                                                       
-    tweets = tw.Cursor(api.search, q=search_string, tweet_mode='extended', lang="pt",).items(10)
-
-    tweets
-
+    search_string = user                                                               
+    tweets = tw.Cursor(api.search, q=search_string, tweet_mode='extended', lang="pt",).items(qtd_tweets)
     users_locs = [[tweet.user.screen_name, tweet.full_text] for tweet in tweets]
+    tweets_dataframe = pd.DataFrame(data=users_locs, columns=['usuario', "texto"])
 
-    users_locs
+    # Limpar os \n por '' (.apply(function clean_text())) e mostrando com .to_markdown()
+    tweets_dataframe['texto_limpo'] = tweets_dataframe['texto'].apply(cleanText)
+    st.write(tweets_dataframe[['usuario','texto_limpo']].to_markdown())
 
-    tweets_dataframe =  pd.DataFrame(data=users_locs, columns=['usuario', "texto"])
+    # tweets_dataframe.to_csv("teste.txt", header=None, index=None, sep='\t')
+    # st.dataframe(data=tweets_dataframe, width=1600)
+    # st.text([tweet for _, tweet in users_locs])
 
-    tweets_dataframe.head()
 
+## Traduzir o texto para inglês
 
-    # Alguns espaços
-    # empty = ['','']
-    # for x in empty:
-    #     st.text(x)
-    # my_bar = st.progress(0)
-    # for percent_complete in range(500):
-    #     time.sleep(0.1)
-    #     my_bar.progress(percent_complete + 1)
+## Passar para o modelo classificador de emoções
