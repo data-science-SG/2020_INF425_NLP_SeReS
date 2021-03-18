@@ -4,10 +4,19 @@ import pandas as pd
 
 import time
 
+from googletrans import Translator
+tradutor = Translator(service_urls=['translate.googleapis.com'])
+
+
 ## ------------------- Funções --------------------------------
 
 def cleanText(x):
     return x.replace('\n', ' ')
+
+def translate(doc):
+    print(doc)
+    result = tradutor.translate(doc, src='pt', dest='en').text
+    return result
 
 ## ------------------------------------------------------------
 
@@ -65,7 +74,6 @@ username = st.text_input('Insira o usuário:')
 tweets_dataframe = pd.DataFrame()
 
 if (st.button('Executar algoritmo')):
-
     qtd_tweets = 10
     # my_bar = st.progress(0)
     # for percent_complete in range(tweets_dataframe.size):
@@ -73,10 +81,10 @@ if (st.button('Executar algoritmo')):
     #     my_bar.progress(percent_complete + 1)
 
     #Exibir os tweets e realizar a pesquisa
-    filters = "-filter:mentions -filter:retweets -filter:images -filter:native_video -filter:links" #Filtro
+    filters = " -filter:mentions -filter:retweets -filter:images -filter:native_video -filter:links" #Filtro
     user = 'from:' + username.replace("@", "")
 
-    search_string = user                                                               
+    search_string = user + filters     
     tweets = tw.Cursor(api.search, q=search_string, tweet_mode='extended', lang="pt",).items(qtd_tweets)
     users_locs = [[tweet.user.screen_name, tweet.full_text] for tweet in tweets]
     tweets_dataframe = pd.DataFrame(data=users_locs, columns=['usuario', "texto"])
@@ -90,6 +98,20 @@ if (st.button('Executar algoritmo')):
     # st.text([tweet for _, tweet in users_locs])
 
 
-## Traduzir o texto para inglês
+    ## Traduzir o texto para inglês -----------------------------------------------------------
+    empty = [''] * 4
+    for x in empty:
+        st.text(x)
+    tweets_dataframe['texto_traduzido'] = tweets_dataframe['texto_limpo'].apply(lambda x: translate(x))
+    st.write(tweets_dataframe[['usuario','texto_limpo', 'texto_traduzido']].to_markdown())
 
-## Passar para o modelo classificador de emoções
+
+    ## Passar para o modelo classificador de emoções -------------------------------------------
+        # Criar as mesmas categorias
+    categories = ['Anger', 'Fear', 'Joy', 'Love', 'Sadness', 'Surprise']
+
+        # Carregando o modelo
+    model = tf.keras.models.load_model('NOME DO MODELO')
+
+    prediction = model.predict([tweets_dataframe['text_traduzido']])
+
