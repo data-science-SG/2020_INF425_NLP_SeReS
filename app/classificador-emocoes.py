@@ -1,6 +1,8 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
+import tensorflow as tf
+import torch
 
 import time
 
@@ -108,10 +110,22 @@ if (st.button('Executar algoritmo')):
 
     ## Passar para o modelo classificador de emoções -------------------------------------------
         # Criar as mesmas categorias
-    categories = ['Anger', 'Fear', 'Joy', 'Love', 'Sadness', 'Surprise']
+    #categories = ['Anger', 'Fear', 'Joy', 'Love', 'Sadness', 'Surprise']
+
+    empty = [''] * 4
+    for x in empty:
+        st.text(x)
 
         # Carregando o modelo
-    model = tf.keras.models.load_model('NOME DO MODELO')
+    #model = torch.load('../models/newmodel.pth')
+    #model.load_state_dict(torch.load('../dicts/newmodel.dict'))
+    #model.eval()
 
-    prediction = model.predict([tweets_dataframe['text_traduzido']])
+    #e = next(model.embeddings[0].parameters())
+    #e.Data
+
+    #X_test = np.vstack(tweets_dataframe['doc_processado'])
+    #X_test = torch.LongTensor(X_test)
+
+    #prediction = model.predict([tweets_dataframe['texto_traduzido']])
 
