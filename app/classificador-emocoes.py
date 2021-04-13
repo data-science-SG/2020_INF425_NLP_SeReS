@@ -2,10 +2,16 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+import matplotlib.pyplot as plt
 import torch
+import tweepy as tw
 
 import time
 
+from gensim.models import KeyedVectors
+from gensim.test.utils import datapath, get_tmpfile
+from gensim.scripts.glove2word2vec import glove2word2vec
+import os
 from googletrans import Translator
 tradutor = Translator(service_urls=['translate.googleapis.com'])
 
@@ -20,18 +26,52 @@ def translate(doc):
     result = tradutor.translate(doc, src='pt', dest='en').text
     return result
 
+def label2Embedding(sentence):
+  for word in sentence: 
+    if word in modelo.vocab:
+      embed = modelo.get_vector(word)
+      if embed is not None:
+        return embed
+
+def convertTokens(tweets):
+    max_len = 53         # comprimento máximo da mensagem (em número de palavras)
+    encoded_docs = []    # inicializa a lista de documentos codificados
+
+    for token in tweets: # para cada token
+        encoded_d = [label2Embedding(t) for t in token]
+        encoded_d = [vec.tolist() for vec in encoded_d if vec is not None]
+
+        # adiciona o padding, se necessário
+        padding_word_vecs = [np.zeros(50).tolist()]*max(0, max_len-len(encoded_d)) 
+        encoded_d = padding_word_vecs + encoded_d
+  
+        # trunca o documento e salva na lista de documentos codificados
+        encoded_docs.append(encoded_d[:max_len]) 
+
+
+    encoded_docs_arrays = [np.vstack(sentence) for sentence in encoded_docs]
+    return encoded_docs_arrays    
+
 ## ------------------------------------------------------------
+
+## Carregando os Word Embedding
+cwd = os.getcwd()
+
+glove_file = datapath(cwd+'/eda/data/glove.6B.50d.txt')
+tmp_file   = get_tmpfile(cwd+"/eda/data/glove.6B.50d_word2vec.txt")
+_          = glove2word2vec(glove_file, tmp_file)
+
+filename_txt = cwd+"/eda/data/glove.6B.50d_word2vec.txt"
+modelo = KeyedVectors.load_word2vec_format(filename_txt)
 
 
 ##  ------------------ Configurações Twitter API -------------------------------
 
 #Visualização de dados
-import pandas as pd
 pd.set_option('display.max_colwidth', -1)
 pd.set_option('display.max_rows', None)
 
 #API do twitter
-import tweepy as tw
 
 
 ## Secret Keys
@@ -65,8 +105,7 @@ st.write(algorithm)
 
 ##  Input do usuário
 # Alguns espaços
-empty = [''] * 4
-for x in empty:
+for x in [''] * 4:
     st.text(x)
 
 username = st.text_input('Insira o usuário:')
@@ -99,30 +138,49 @@ if (st.button('Executar algoritmo')):
     # st.dataframe(data=tweets_dataframe, width=1600)
     # st.text([tweet for _, tweet in users_locs])
 
+    for x in [''] * 4:
+        st.text(x)
 
     ## Traduzir o texto para inglês -----------------------------------------------------------
-    empty = [''] * 4
-    for x in empty:
-        st.text(x)
     tweets_dataframe['texto_traduzido'] = tweets_dataframe['texto_limpo'].apply(lambda x: translate(x))
     st.write(tweets_dataframe[['usuario','texto_limpo', 'texto_traduzido']].to_markdown())
 
+            # Carregando o modelo
+    model = torch.load(cwd+"/models/emotions_classifier.pth")
+
+    st.write('----------------  MODEL', model.eval())
+
+        # Carregando o dicionario
+    loaded_dict = model.load_state_dict(torch.load(cwd+"/dicts/emotions_classifier_dict"))
+
+    st.write('LOADED DICT -------------------', loaded_dict)
+
+    e = next(model.embeddings[0].parameters())
+    st.write('------------- E,DATA',e.data)
+
+    tweets_dataframe['X'] = convertTokens(tweets_dataframe['texto_traduzido'])
+    X_test = np.vstack(tweets_dataframe['X'])
+    X_test = torch.LongTensor(X_test)
+
+    preds = model.forward(X_test)
+
+    st.write("------------------ DATAFRAME X",tweets_dataframe['X'])
+    st.write("---------  PREDS",preds)
+
+    tweets_dataframe["previsoes"] = [torch.exp(pred).detach().numpy() for pred in preds]
 
     ## Passar para o modelo classificador de emoções -------------------------------------------
-        # Criar as mesmas categorias
-    #categories = ['Anger', 'Fear', 'Joy', 'Love', 'Sadness', 'Surprise']
+    
 
-    empty = [''] * 4
-    for x in empty:
-        st.text(x)
 
-        # Carregando o modelo
-    #model = torch.load('../models/newmodel.pth')
-    #model.load_state_dict(torch.load('../dicts/newmodel.dict'))
-    #model.eval()
+    ## Mostrando o quadro da distribuição de emoções
+    feelings = {'Angry': 0,'Disgust': 1,'Fear': 2,'Happy': 3,'Sad': 4,'Surprise': 5}
+    emotions = list(moods.keys())
 
-    #e = next(model.embeddings[0].parameters())
-    #e.Data
+    #usuario = X_test_df.set_index('user').loc[usuario_teste][0]
+    #usuario = usuario.reshape(-1)
+    #sns.barplot(y=usuario,x=emotions)
+
 
     #X_test = np.vstack(tweets_dataframe['doc_processado'])
     #X_test = torch.LongTensor(X_test)
