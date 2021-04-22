@@ -1,5 +1,9 @@
 
 # custom files
+vscode/
+.vscode/
+*.vscode*
+*.vscode/*
 *settings.json
 *glove.6B.50d.txt
 *glove.6B.50d_word2vec.txt
