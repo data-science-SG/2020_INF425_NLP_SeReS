@@ -1,4 +1,4 @@
-def cleanText(words, stem=False):
+def clean_text(words, stem=False):
   """ Remove stopwords, punctuation, special caracters, etc from the received text.
 
   Keywords arguments:
