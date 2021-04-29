@@ -5,6 +5,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import torch
 import tweepy as tw
+import seaborn as sns
 
 import time
 
@@ -15,7 +16,16 @@ import os
 from googletrans import Translator
 tradutor = Translator(service_urls=['translate.googleapis.com'])
 
+from nltk.tokenize import TweetTokenizer
+import sys
 
+## ------------------- Variáveis --------------------------------
+tknzr = TweetTokenizer()
+cwd = os.getcwd()
+sys.path.append('.\app')
+
+import modelClass
+from modelClass import *
 ## ------------------- Funções --------------------------------
 
 def cleanText(x):
@@ -26,12 +36,13 @@ def translate(doc):
     result = tradutor.translate(doc, src='pt', dest='en').text
     return result
 
-def label2Embedding(sentence):
-  for word in sentence: 
-    if word in modelo.vocab:
-      embed = modelo.get_vector(word)
-      if embed is not None:
-        return embed
+def label2Embedding(word):
+  ''' Recebe uma string (word) e devolve o embedding vector correspondente (se existir).
+  '''
+  if word in modelo.vocab:
+    embed = modelo.get_vector(word)
+    if embed is not None:
+      return embed
 
 def convertTokens(tweets):
     max_len = 53         # comprimento máximo da mensagem (em número de palavras)
@@ -55,13 +66,14 @@ def convertTokens(tweets):
 ## ------------------------------------------------------------
 
 ## Carregando os Word Embedding
-cwd = os.getcwd()
 
-glove_file = datapath(cwd+'/eda/data/glove.6B.50d.txt')
-tmp_file   = get_tmpfile(cwd+"/eda/data/glove.6B.50d_word2vec.txt")
+num_dims = 100
+
+glove_file = datapath(cwd+f'/eda/data/glove.6B.{num_dims}d.txt')
+tmp_file   = get_tmpfile(cwd+f"/eda/data/glove.6B.{num_dims}d_word2vec.txt")
 _          = glove2word2vec(glove_file, tmp_file)
 
-filename_txt = cwd+"/eda/data/glove.6B.50d_word2vec.txt"
+filename_txt = cwd+f"/eda/data/glove.6B.{num_dims}d_word2vec.txt"
 modelo = KeyedVectors.load_word2vec_format(filename_txt)
 
 
@@ -115,11 +127,11 @@ username = st.text_input('Insira o usuário:')
 tweets_dataframe = pd.DataFrame()
 
 if (st.button('Executar algoritmo')):
-    qtd_tweets = 10
-    # my_bar = st.progress(0)
-    # for percent_complete in range(tweets_dataframe.size):
-    #     time.sleep(0.1)
-    #     my_bar.progress(percent_complete + 1)
+    qtd_tweets = 2
+    #my_bar = st.progress(0)
+    #for percent_complete in range(qtd_tweets):
+        #time.sleep(0.1)
+        #my_bar.progress(percent_complete + 1)
 
     #Exibir os tweets e realizar a pesquisa
     filters = " -filter:mentions -filter:retweets -filter:images -filter:native_video -filter:links" #Filtro
@@ -141,46 +153,53 @@ if (st.button('Executar algoritmo')):
     for x in [''] * 4:
         st.text(x)
 
-    ## Traduzir o texto para inglês -----------------------------------------------------------
+    ## Traduzir o texto para inglês
     tweets_dataframe['texto_traduzido'] = tweets_dataframe['texto_limpo'].apply(lambda x: translate(x))
     st.write(tweets_dataframe[['usuario','texto_limpo', 'texto_traduzido']].to_markdown())
 
-            # Carregando o modelo
-    model = torch.load(cwd+"/models/emotions_classifier.pth")
-
-    st.write('----------------  MODEL', model.eval())
-
-        # Carregando o dicionario
-    loaded_dict = model.load_state_dict(torch.load(cwd+"/dicts/emotions_classifier_dict"))
-
-    st.write('LOADED DICT -------------------', loaded_dict)
-
-    e = next(model.embeddings[0].parameters())
-    st.write('------------- E,DATA',e.data)
-
-    tweets_dataframe['X'] = convertTokens(tweets_dataframe['texto_traduzido'])
-    X_test = np.vstack(tweets_dataframe['X'])
-    X_test = torch.LongTensor(X_test)
-
-    preds = model.forward(X_test)
-
-    st.write("------------------ DATAFRAME X",tweets_dataframe['X'])
-    st.write("---------  PREDS",preds)
-
-    tweets_dataframe["previsoes"] = [torch.exp(pred).detach().numpy() for pred in preds]
-
-    ## Passar para o modelo classificador de emoções -------------------------------------------
+    for x in [''] * 4:
+        st.text(x)
     
+    # Transformando as frases em tokens
+    tweets_dataframe["texto_traduzido"] = [tknzr.tokenize(sentence) for sentence in tweets_dataframe["texto_traduzido"]]
 
+    # Convertendo os tokens pelo seu embedding com um tamanho máximo de 150
+    max_len = 150        # comprimento máximo da mensagem (em número de palavras)
+    encoded_docs = []    # inicializa a lista de documentos codificados
+
+    for sentence in tweets_dataframe["texto_traduzido"]: # para cada token
+        encoded_d = [label2Embedding(t) for t in sentence]
+        encoded_d = [vec.tolist() for vec in encoded_d if vec is not None]
+        # adiciona o padding, se necessário
+        padding_word_vecs = [np.zeros(num_dims).tolist()]*max(0, max_len-len(encoded_d)) 
+        encoded_d = padding_word_vecs + encoded_d
+        # trunca o documento e salva na lista de documentos codificados
+        encoded_docs.append(encoded_d[:max_len]) 
+    encoded_docs_arrays = [np.vstack(sentence) for sentence in encoded_docs]
+
+    tweets_dataframe['X'] = pd.Series(encoded_docs_arrays)
+    X = np.dstack(tweets_dataframe['X'].values).transpose(2,0,1)
+    X = torch.FloatTensor(X)
+
+    # Carregando o modelo
+    model = torch.load(cwd+"/models/emotions_classifier_LSTM.pth", map_location=torch.device('cpu'))
+    model.eval()
+
+    # Fazendo predições
+    preds = model.forward(X)
 
     ## Mostrando o quadro da distribuição de emoções
-    feelings = {'Angry': 0,'Disgust': 1,'Fear': 2,'Happy': 3,'Sad': 4,'Surprise': 5}
-    emotions = list(moods.keys())
+    emotions = ['Angry','Disgust','Fear','Happy','Sad','Surprise']
+    preds = preds.detach().numpy()
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    for array in preds:     
+        ax.bar(x=emotions, height=array, color=['lightcoral', 'khaki', 'bisque', 'lightsteelblue', 'lightgreen', 'thistle'])
+    st.pyplot(fig)
 
     #usuario = X_test_df.set_index('user').loc[usuario_teste][0]
     #usuario = usuario.reshape(-1)
-    #sns.barplot(y=usuario,x=emotions)
-
+    #sns.barplot(y=preds,x=emotions)
 
     #X_test = np.vstack(tweets_dataframe['doc_processado'])
     #X_test = torch.LongTensor(X_test)
