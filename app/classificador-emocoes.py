@@ -191,10 +191,11 @@ if (st.button('Executar algoritmo')):
     ## Mostrando o quadro da distribuição de emoções
     emotions = ['Angry','Disgust','Fear','Happy','Sad','Surprise']
     preds = preds.detach().numpy()
+    preds_probs = np.exp(preds)
 
-    fig, ax = plt.subplots(figsize=(10, 6))
-    for array in preds:     
-        ax.bar(x=emotions, height=array, color=['lightcoral', 'khaki', 'bisque', 'lightsteelblue', 'lightgreen', 'thistle'])
+    fig, ax = plt.subplots(nrows=qtd_tweets,ncols=1,figsize=(10, 6))
+    for i, array in enumerate(preds_probs):     
+        ax[i].bar(x=emotions, height=array, color=['lightcoral', 'khaki', 'bisque', 'lightsteelblue', 'lightgreen', 'thistle'])
     st.pyplot(fig)
 
     #usuario = X_test_df.set_index('user').loc[usuario_teste][0]
