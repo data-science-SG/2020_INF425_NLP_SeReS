@@ -119,9 +119,6 @@ def load_word_embedding(num_dims=100):
 
 
 ## ------------------- Começo da página -----------------------------------
-
-modelo = load_word_embedding()
-
 st.title('Modelo Classificador de Emoções')
 
 st.header('Sobre o projeto')
@@ -144,7 +141,7 @@ username = st.text_input('Insira o usuário:')
 if (st.button('Executar algoritmo')):
     createSpaces()
 
-    qtd_tweets = 3
+    qtd_tweets = 10
     filters = " -filter:mentions -filter:retweets -filter:images -filter:native_video -filter:links" #Filtro
     user = 'from:' + username.replace("@", "")
 
@@ -159,6 +156,7 @@ if (st.button('Executar algoritmo')):
     tweets_dataframe = pd.DataFrame(data=users_locs, columns=['usuario', "texto"])
 
     if len(tweets_dataframe) >= 3:
+        modelo = load_word_embedding()
         tweets_dataframe['texto_limpo'] = tweets_dataframe['texto'].apply(cleanText)
         
         st.write('Aqui estão os seus tweets que coletamos para fazer a análise')
@@ -202,7 +200,7 @@ if (st.button('Executar algoritmo')):
         preds_probs = np.exp(preds)
 
         st.write('Aqui está os gráficos das distribuições das emoções que o nosso modelo classificou')
-        fig, ax = plt.subplots(nrows=qtd_tweets,ncols=1,figsize=(10, 6))
+        fig, ax = plt.subplots(nrows=len(tweets_dataframe),ncols=1,figsize=(15, 15))
 
         for i, array in enumerate(preds_probs):   
             ax[i].set_title(tweets_dataframe['texto_limpo'][i])
