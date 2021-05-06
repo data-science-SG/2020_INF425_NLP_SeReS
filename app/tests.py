@@ -1,38 +1,25 @@
 import streamlit as st
 import time
 
-@st.cache(suppress_st_warning=True)  # 👈 Changed this
-def expensive_computation(a, b):
-    # 👇 Added this
-    st.write("Cache miss: expensive_computation(", a, ",", b, ") ran")
-    time.sleep(2)  # This makes the function take 2s to run
-    return a * b
+@st.cache
+def loadEmbedding():
+    time.sleep(2)
+    return "boy it's loaded"
 
+username = st.text_input('Insira o usuário:')
 
-def createSpaces():
-    '''
-    Cria um espaço para separar as informaçç
-    '''
-    st.write('#')
+if (st.button('Executar algoritmo')):
+    st.write(loadEmbedding())
 
-a = 2
-b = 21
-res = expensive_computation(a, b)
+# @st.cache(suppress_st_warning=True)  # 👈 Changed this
+# def expensive_computation(a, b):
+#     # 👇 Added this
+#     st.write("Cache miss: expensive_computation(", a, ",", b, ") ran")
+#     time.sleep(2)  # This makes the function take 2s to run
+#     return a * b
 
-st.write("Result:", res)
+# a = 2
+# b = 22
+# res = expensive_computation(a, b)
 
-createSpaces()
-
-st.write("Result:", res)
-
-st.write("Result:", res)
-
-st.write("Result:", res)
-
-st.write("Result:", res)
-
-import time
-my_bar = st.progress(0)
-for percent_complete in range(100):
-    time.sleep(0.1)
-    my_bar.progress(percent_complete + 1)
+# st.write("Result:", res)

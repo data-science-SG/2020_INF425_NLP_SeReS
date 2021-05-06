@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import torch
 import tweepy as tw
 import seaborn as sns
-
 import time
 
 from gensim.models import KeyedVectors
@@ -22,6 +21,11 @@ sys.path.append('.\app')
 
 import modelClass
 from modelClass import *
+
+import page_layout
+import text_manipulation
+from page_layout import createSpaces, showProgressBar
+from text_manipulation import cleanText, translate, label2Embedding, convertTokens
 
 ## ------------------- Variáveis globais --------------------------------
 
@@ -54,67 +58,14 @@ api = tw.API(auth, wait_on_rate_limit=True)                  # método API da bi
 
 ## ------------------- Funções ----------------------------------------
 
-def createSpaces():
-    '''
-    Cria um espaço para separar as informaçç
-    '''
-    st.write('#')
-
-def showProgressBar(sleep=0.01):
-    my_bar = st.progress(0)
-    for percent_complete in range(100):
-        time.sleep(sleep)
-        my_bar.progress(percent_complete + 1)
-
-def cleanText(x):
-    '''
-    Recebe uma frase e remove as "\n", retornando a mesma
-    '''
-    return x.replace('\n', ' ')
-
-def translate(doc, src='pt', dest='en'):
-    '''
-    Recebe uma palavra e a traduz para o idioma de destino
-    '''
-    result = tradutor.translate(doc, src=src, dest=dest).text
-    return result
-
-def label2Embedding(word):
-  ''' Recebe uma string (word) e devolve o embedding vector correspondente (se existir).
-  '''
-  if word in modelo.vocab:
-    embed = modelo.get_vector(word)
-    if embed is not None:
-      return embed
-
-def convertTokens(tweets, max_len=150, num_dims=100):
-    '''
-    Recebe uma lista de tweets e converte os tokens pelo seu embedding, concatenando  o valor 0 para completar o tamanho máximo de palavras definida
-    '''
-    # Convertendo os tokens pelo seu embedding com um tamanho máximo de 150
-    max_len = max_len       # comprimento máximo da mensagem (em número de palavras)
-    encoded_docs = []    # inicializa a lista de documentos codificados
-
-    for sentence in tweets: # para cada token
-        encoded_d = [label2Embedding(t) for t in sentence]
-        encoded_d = [vec.tolist() for vec in encoded_d if vec is not None]
-        # adiciona o padding, se necessário
-        padding_word_vecs = [np.zeros(num_dims).tolist()]*max(0, max_len-len(encoded_d)) 
-        encoded_d = padding_word_vecs + encoded_d
-        # trunca o documento e salva na lista de documentos codificados
-        encoded_docs.append(encoded_d[:max_len]) 
-
-    encoded_docs_arrays = [np.vstack(sentence) for sentence in encoded_docs]
-    return encoded_docs_arrays
-
-
-@st.cache
-def load_word_embedding(num_dims=100):
-    glove_file = datapath(cwd+f'/eda/data/glove.6B.{num_dims}d.txt')
-    tmp_file   = get_tmpfile(cwd+f"/eda/data/glove.6B.{num_dims}d_word2vec.txt")
+@st.cache(suppress_st_warning=True)
+def load_word_embedding():
+    st.write("Cache miss: expensive_computation() ran")
+    glove_file = datapath(cwd+f'/eda/data/glove.6B.{100}d.txt')
+    tmp_file   = get_tmpfile(cwd+f"/eda/data/glove.6B.{100}d_word2vec.txt")
     _          = glove2word2vec(glove_file, tmp_file)
 
-    filename_txt = cwd+f"/eda/data/glove.6B.{num_dims}d_word2vec.txt"
+    filename_txt = cwd+f"/eda/data/glove.6B.{100}d_word2vec.txt"
     return KeyedVectors.load_word2vec_format(filename_txt)
 
 
@@ -221,8 +172,3 @@ if (st.button('Executar algoritmo')):
         st.markdown('''**Importante:** Mesmo que o usuário altere a conta do modo privado, ele deverá
                     ter realizado algum tweet com a conta já publica para que o mesmo possa ser
                     coletado!''')
-
-
-    
-  
-
