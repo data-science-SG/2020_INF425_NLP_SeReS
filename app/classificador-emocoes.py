@@ -25,7 +25,7 @@ from modelClass import *
 import page_layout
 import text_manipulation
 from page_layout import createSpaces, showProgressBar
-from text_manipulation import cleanText, translate, label2Embedding, convertTokens
+from text_manipulation import cleanText, translate, convertTokens
 
 ## ------------------- Variáveis globais --------------------------------
 
@@ -68,6 +68,7 @@ def load_word_embedding():
     filename_txt = cwd+f"/eda/data/glove.6B.{100}d_word2vec.txt"
     return KeyedVectors.load_word2vec_format(filename_txt)
 
+# criar função decoradora que declara o modelo
 
 ## ------------------- Começo da página -----------------------------------
 st.title('Modelo Classificador de Emoções')
@@ -127,7 +128,7 @@ if (st.button('Executar algoritmo')):
         # Transformando as frases em tokens
         tweets_dataframe["texto_traduzido"] = [tknzr.tokenize(sentence) for sentence in tweets_dataframe["texto_traduzido"]]
 
-        encoded_docs_arrays = convertTokens(tweets_dataframe["texto_traduzido"])
+        encoded_docs_arrays = convertTokens(tweets_dataframe["texto_traduzido"], modelo)
 
         tweets_dataframe['X'] = pd.Series(encoded_docs_arrays)
         X = np.dstack(tweets_dataframe['X'].values).transpose(2,0,1)

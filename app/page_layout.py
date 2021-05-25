@@ -1,3 +1,6 @@
+import streamlit as st
+import time
+
 def createSpaces():
     '''
     Cria um espaço para separar as informaçç
