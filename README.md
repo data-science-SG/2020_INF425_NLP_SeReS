@@ -4,9 +4,11 @@ Esse projeto demonstra o desenvolvimento de um modelo de machine learning de red
 ## Índice
 
 ## Conteúdos
-[01 - Coleta de Tweets](https://github.com/Sorgetz)
-[02 - Modelo de Classificação de Emoções](https://github.com/Sorgetz)
-[03 - Modelo de Detecção de Sinais de Transtorno Depressivo](https://github.com/Sorgetz)
+[01 - Coleta de Tweets](need the link)
+
+[02 - Modelo de Classificação de Emoções](need the link)
+
+[03 - Modelo de Detecção de Sinais de Transtorno Depressivo](need the link)
 
 ## Primeiro passo
 Para se fazer uso do código são necessários os seguintes requisitos:
