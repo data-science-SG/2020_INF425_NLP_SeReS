@@ -3,10 +3,15 @@ Esse projeto demonstra o desenvolvimento de um modelo de machine learning de red
 
 ## 📑 Índice
 [Conteúdos](##conteúdos)
+
 [Primeiros Passos](##primeiros-passos)
+
 [Instalação](##intalacao)
+
 [Coleta de Tweets](##coleta-de-tweets)
+
 [Classificador de Emoções](##classificador-de-emocoes)
+
 [Modelo de Detecção de Sinais do Transtorno Depressivo](##modelo-de-deteccao-de-sintomas-do-transtorno-depressivo)
 [Streamlit](##streamlit)
 
