@@ -1,4 +1,7 @@
 # Detecção Automática de Sintomas do Transtorno Depressivo em Usuários de Redes Sociais
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 Esse projeto demonstra o desenvolvimento de um modelo de machine learning de redes neurais para a detecção de sintomas do transtorno depressivo com base em um dataset contendo tweets de usuários, realizado com a utilização de Jupyters Notebook na linguagem Python.
 
 ## Índice
@@ -67,3 +70,23 @@ O último notebook é reservado para o treinamento do modelo final, para isso é
 ```diff
 - fazer o bot do all-contributors funcionar
 ```
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/fontanads"><img src="https://avatars.githubusercontent.com/u/12212663?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Bruno Fontana</b></sub></a><br /><a href="https://github.com/data-science-SG/2020_INF425_NLP_SeReS/commits?author=fontanads" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
