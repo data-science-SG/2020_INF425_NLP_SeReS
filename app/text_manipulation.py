@@ -57,7 +57,7 @@ def label2Embedding(word, modelo):
     if embed is not None:
       return embed
 
-def convertTokens(tweets, modelo, max_len=150, num_dims=100):
+def convertTokens(tweets, modelo, max_len=150, num_dims=50):
     '''
     Recebe uma lista de tweets e converte os tokens pelo seu embedding, concatenando  o valor 0 para completar o tamanho máximo de palavras definida
     '''

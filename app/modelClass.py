@@ -1,4 +1,3 @@
-import torch
 from torch import nn
 
 class moodClassifierWithLasersOnSteroids(nn.Module):
