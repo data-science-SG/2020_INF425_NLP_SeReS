@@ -32,10 +32,10 @@ cwd = os.getcwd()
 min_depression_tweets = 6
 
 # Tratanto secrets
-#secret_access_token = st.secrets['secret_access_token']
-#secret_access_token_secret = st.secrets['secret_access_token_secret']
-#secret_api_key = st.secrets['secret_api_key']
-#secret_api_key_secret = st.secrets['secret_api_key_secret']
+# secret_access_token = st.secrets['SECRET_ACCESS_TOKEN']
+# secret_access_token_secret = st.secrets['SECRET_ACCESS_TOKEN_SECRET']
+# secret_api_key = st.secrets['SECRET_API_KEY']
+# secret_api_key_secret = st.secrets['SECRET_API_KEY_SECRET']
 
 ## ------------------- Pré configurações -------------------------------
 
@@ -64,7 +64,6 @@ def main():
     st.title('Modelo Classificador de Emoções')
 
     st.header('Sobre o projeto')
-
     st.write('''O projeto referenciado no presente relatório se consiste na tarefa de construir um algoritmo, utilizando dos conceitos de Machine Learning e 
     Data Science, que seja capaz de identificar, através de análises textuais de tweets retiradas da rede social Twitter, a emoção imposta no texto, em foco 
     para possíveis sinais de depressão. Vale ressaltar a diferença entre análise de emoções e análise de sentimentos. Ao nos referirmos a análise de emoções, 
@@ -72,9 +71,13 @@ def main():
     sentimento expresso pelo texto, normalmente sendo classificados como positivo, negativo e neutro. ''')
 
     st.subheader('Sobre a uso da ferramenta')
-
     st.write('''Para utilizar a página, você deve inserir seu nome de usuário no campo abaixo. Após isso, clique no botão *Executar algoritmo* logo abaixo. 
     Após isso, o sistema irá buscar seus tweets em sua conta e irá executar o Algoritmo Classificador de Emoções, mostrando logo abaixo o resultado obtido''')
+
+    st.subheader('Sobre os resultados')
+    st.markdown('''Os resultados podem retornar valores **0** ou **1**, sendo, respectivamente, **não** identificado com sintomas depressivos e **identificado** 
+    com sintomas depressivos''')
+    st.markdown('''**OBS:** Vale lembrar que o resultado não é oficial, o sistema não substitui um profissional da saúde!''')
 
     createSpaces()
 
@@ -178,12 +181,12 @@ def main():
             predsDepression = predsDepression.detach().cpu().numpy()
 
             if predsDepression[0] == 1:
-                st.markdown('O nosso modelo previu a classe **1** - nosso modelo identificou sinais de depressão em seus tweets')
-                st.markdown('**OBS:** Vale ressaltar que esta análise NÃO é oficial, a plataforma NÃO substitui, de qualquer forma, profissionais da saúde para dar esta informação para você!')
+                st.markdown('E o resultado foi... **1** - nosso modelo identificou sinais de depressão em seus tweets')
+                st.markdown('**OBS:** Vale ressaltar que esta análise NÃO é oficial, a plataforma NÃO substitui, de qualquer forma, qualquer profissional da saúde para dar esta informação para você!')
                 st.write('Independente do resultado, encorajamos a procura de ajuda profissional')
             else:    
-                st.markdown('O nosso modelo previu a classe **0** - nosso modelo não identificou sinais de depressão em seus tweets')
-                st.markdown('**OBS:** Vale ressaltar que esta análise NÃO é oficial, a plataforma NÃO substitui, de qualquer forma, profissionais da saúde para dar esta informação para você!')
+                st.markdown('E o resultado foi... **0** - nosso modelo não identificou sinais de depressão em seus tweets')
+                st.markdown('**OBS:** Vale ressaltar que esta análise NÃO é oficial, a plataforma NÃO substitui, de qualquer forma, qualquer profissional da saúde para dar esta informação para você!')
     
         else:
             st.write('Desculpe, não conseguimos utilizar os tweets deste usuário para fazer a análise :(')

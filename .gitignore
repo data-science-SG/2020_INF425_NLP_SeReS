@@ -25,6 +25,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+.streamlit
 build/
 develop-eggs/
 dist/
