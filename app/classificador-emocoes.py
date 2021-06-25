@@ -32,10 +32,10 @@ cwd = os.getcwd()
 min_depression_tweets = 6
 
 # Tratanto secrets
-# secret_access_token = st.secrets['SECRET_ACCESS_TOKEN']
-# secret_access_token_secret = st.secrets['SECRET_ACCESS_TOKEN_SECRET']
-# secret_api_key = st.secrets['SECRET_API_KEY']
-# secret_api_key_secret = st.secrets['SECRET_API_KEY_SECRET']
+secret_access_token = st.secrets["SECRET_ACCESS_TOKEN"]
+secret_access_token_secret = st.secrets["SECRET_ACCESS_TOKEN_SECRET"]
+secret_api_key = st.secrets["SECRET_API_KEY"]
+secret_api_key_secret = st.secrets["SECRET_API_KEY_SECRET"]
 
 ## ------------------- Pré configurações -------------------------------
 
@@ -44,11 +44,11 @@ pd.set_option('display.max_rows', None)
 
 ## ------------------- API do twitter ----------------------------------
 
-access_token = '830182504468533248-uysXPZQhVDUrPXwjlyuAbV9YAGNWjwQ'
-access_token_secret = 'bX2QVMH7HWgWs3uxnVL5dbQx8eqONF5TQ6kzkrm2LUG44'
+access_token = secret_access_token
+access_token_secret = secret_access_token_secret
 
-API_key = 'Gjihyy0lww3s4eSsHS0LtbZ3X' # consumer_key 
-API_secret_key = '5FE2zFVCkMLYZuK0G6nvvQ4YZgZW8YbN14z4VMXrUyRujMjYyl'
+API_key = secret_api_key # consumer_key 
+API_secret_key = secret_api_key_secret
 
 auth = tw.OAuthHandler(API_key, API_secret_key )             # método OAuthHandler da biblioteca tw: 
                                                              # -- cria o objeto authentication handler: usa "consumer_key" e "consumer_secret"
