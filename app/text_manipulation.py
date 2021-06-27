@@ -1,9 +1,8 @@
 import numpy as np
+import re
 
 from googletrans import Translator
 tradutor = Translator(service_urls=['translate.googleapis.com'])
-import string
-import re
 import nltk
 from nltk.corpus import stopwords 
 from nltk.stem import PorterStemmer
@@ -76,3 +75,15 @@ def convertTokens(tweets, modelo, max_len=150, num_dims=50):
 
     encoded_docs_arrays = [np.vstack(sentence) for sentence in encoded_docs]
     return encoded_docs_arrays
+
+def breakPlotTitle(tweet, wordCount=14):
+    '''
+    Recebe uma frase (tweet) e adiciona tokens \n para quebra to texto
+    '''
+    a = tweet.split()
+    ret = ''
+    for i in range(0, len(a), wordCount):
+        ret += ' '.join(a[i:i+wordCount]) + '\n'
+
+    return ret
+
