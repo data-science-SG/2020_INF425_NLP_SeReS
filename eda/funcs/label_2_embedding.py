@@ -1,16 +1,10 @@
-def label2Embedding(sentence):
-  """ Check if the word of the received sentence is included in the pre-trained word embedding and return it's embedding
-  
-  Keywords arguments:
-  sentence -- tweet itself
-  """
-  print('HELLO CARLOS')
-  for word in sentence:
-    if word in embedding.vocab:
-      embed = embedding.get_vector(word)
+def label2Embedding(word, model):
+  ''' Recebe uma string (word) e o modelo e devolve o embedding vector correspondente (se existir).
+  '''
+  if word in model.vocab:
+    embed = model.get_vector(word)
+    if embed is not None:
       return embed
-    else:
-      print("This word is not in the vocabuylary: ", word, "\n")
 
 # para testar a sua função
 if __name__=='__main__':

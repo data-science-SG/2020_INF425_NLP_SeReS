@@ -1,4 +1,18 @@
-def cleanText(words, stem=False):
+import string
+import re
+import nltk
+from nltk.tokenize import TweetTokenizer
+import re
+from nltk import FreqDist
+from nltk.tokenize import TweetTokenizer
+from nltk.stem import PorterStemmer
+from nltk.corpus import stopwords 
+
+nltk.download('stopwords')
+stopwords = nltk.corpus.stopwords.words("english")
+token_espaço = nltk.tokenize.WhitespaceTokenizer()
+
+def clean_text(words, stem=False):
   """ Remove stopwords, punctuation, special caracters, etc from the received text.
 
   Keywords arguments:
