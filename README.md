@@ -69,7 +69,7 @@ Feito com ❤️ por Bruno Fontana, Carlos Reinheimer e Eduarda Sorgetz. Entre e
 
 
 ```diff
-- adicionar resumo do projeto
+- adicionar resumo do projeto :)
 ```
 
 ## Como criar o dataset?
