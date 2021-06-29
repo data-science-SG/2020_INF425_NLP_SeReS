@@ -63,8 +63,7 @@ Caso deseje ver o código em ação sem precisar glonar o repositório você pod
 ## Autores
 
 Feito com ❤️ por Bruno Fontana, Carlos Reinheimer e Eduarda Sorgetz. Entre em contato!
- ![Linkedin Badge](https://img.shields.io/badge/-Bruno-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https:https://www.linkedin.com/in/fontanads/)   ![Linkedin Badge](https://img.shields.io/badge/-Carlos-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https:https://www.linkedin.com/in/carlos-reinheimer-108227199/)   ![Linkedin Badge](https://img.shields.io/badge/-Eduarda-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/eduarda-sorgetz-2690981a4/) 
-
+ ![Linkedin Badge](https://img.shields.io/badge/-Bruno-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/fontanads/)   ![Linkedin Badge](https://img.shields.io/badge/-Carlos-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/carlos-reinheimer-108227199/)   ![Linkedin Badge](https://img.shields.io/badge/-Eduarda-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/eduarda-sorgetz-2690981a4/) 
 
 ## Colaboradores
 
