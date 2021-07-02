@@ -7,15 +7,10 @@ Esse projeto demonstra o desenvolvimento de um modelo de machine learning de red
 
 ## 📑 Índice
 [Conteúdos](##conteúdos)
-
 [Primeiros Passos](##primeiros-passos)
-
 [Instalação](##intalacao)
-
 [Coleta de Tweets](##coleta-de-tweets)
-
 [Classificador de Emoções](##classificador-de-emocoes)
-
 [Modelo de Detecção de Sinais do Transtorno Depressivo](##modelo-de-deteccao-de-sintomas-do-transtorno-depressivo)
 [Streamlit](##streamlit)
 
@@ -40,15 +35,38 @@ Como o dataset contém informações **sensíveis**, mesmo que de forma pública
 
 Assim, a primeira parte para poder fazer uso do modelo é realizar a coleta de tweets utilizando o **Tweepy**. O Tweepy faz uso de chaves para seu uso, por isso é importante se criar uma conta no [Twitter Developer](https://developer.twitter.com/en).
 
+```python
+access_token = 'Insira seu acess token'
+access_token_secret = 'Insira seu acess token secret'
+
+API_key = 'Insira consumer key'
+API_secret_key = 'Insira consumer secret'
+```
 Além disso, no terceiro notebook fazemos uso da biblioteca emot para conversão de emoticons para texto.
 
 Mas caso tenha alguma dificuldade ou não queira criar a conta, você pode entrar em contato conosco para ter acesso a coleta feita por nós.
+
+Caso deseje modificar alguns parâmetros de coleta, eles podem ser modificados nestas linhas.
+```python
+#Escolhendo a quantidade de tweets
+num_itens_depre = 600
+num_itens_sad = 10
+
+#Quantos tweets do usuário coletar
+num_tweets_depre = 10
+num_tweets_sad = 4
+
+#Mínimo de tweets que o usuário deve ter para entrar no dataset
+min_tweets = 3
+```
+
+Além disso, infelizmente os tweets deve passar por um filtro manual, para retirar ironias e falsos-positivos.
 
 ## 📊 Classicador de emoções
 ![image](https://drive.google.com/uc?export=view&id=1kziSBU95NhBx3kxw-oKXhHPmgvsG2fNx) 
 
 Para treinar o classificador de emoções é necessário rodar o notebook e exportar o modelo.
-> Nota: O modelo de classicacação de emoções é treinado com a mescla de 2 datasets encontrados no Kaggle, com seus respectivos créditos.
+> Nota: O modelo de classicacação de emoções é treinado com a mescla de 2 datasets encontrados no Kaggle, com seus respectivos créditos nos cadernos.
 
 ![image](https://drive.google.com/uc?export=view&id=1SR-phh2X58VvbhrSVNKy1_KnkFzQt0Gu)
 
@@ -64,31 +82,6 @@ Caso deseje ver o código em ação sem precisar glonar o repositório você pod
 
 Feito com ❤️ por Bruno Fontana, Carlos Reinheimer e Eduarda Sorgetz. Entre em contato!
  ![Linkedin Badge](https://img.shields.io/badge/-Bruno-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/fontanads/)   ![Linkedin Badge](https://img.shields.io/badge/-Carlos-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/carlos-reinheimer-108227199/)   ![Linkedin Badge](https://img.shields.io/badge/-Eduarda-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/eduarda-sorgetz-2690981a4/) 
-
-## Colaboradores
-
-
-```diff
-- adicionar resumo do projeto :)
-```
-
-## Como criar o dataset?
-
-
-## Como funciona o modelo?
-
-
-## Como treinar o modelo?
-
-## Como utilizar o modelo pré-treinado?
-
-
-
-## Contribuidores 
-
-```diff
-- fazer o bot do all-contributors funcionar
-```
 
 ## Contributors ✨
 
