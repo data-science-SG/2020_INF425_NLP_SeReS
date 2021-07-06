@@ -6,17 +6,26 @@
 Esse projeto demonstra o desenvolvimento de um modelo de machine learning de redes neurais para a detecção de sintomas do transtorno depressivo com base em um dataset contendo tweets de usuários, realizado com a utilização de Jupyters Notebook na linguagem Python.
 
 ## 📑 Índice
+
 [Conteúdos](##conteúdos)
+
 [Primeiros Passos](##primeiros-passos)
+
 [Instalação](##intalacao)
+
 [Coleta de Tweets](##coleta-de-tweets)
+
 [Classificador de Emoções](##classificador-de-emocoes)
+
 [Modelo de Detecção de Sinais do Transtorno Depressivo](##modelo-de-deteccao-de-sintomas-do-transtorno-depressivo)
 [Streamlit](##streamlit)
 
 ## Conteúdos
+
 [01 - Coleta de Tweets](https://github.com/Sorgetz)
+
 [02 - Modelo de Classificação de Emoções](https://github.com/Sorgetz)
+
 [03 - Modelo de Detecção de Sinais de Transtorno Depressivo](https://github.com/Sorgetz)
 
 ## Primeiros passos
