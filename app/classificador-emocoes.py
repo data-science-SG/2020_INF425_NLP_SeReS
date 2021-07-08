@@ -207,14 +207,14 @@ def main():
 
 @st.cache
 def load_model():
-    cloud_model_location = '1Y9ZBdj2ovnL0-Ndg6i-mfe7fkrb-Vbdl'
-    save_dest = Path(cwd+f'/eda/data/newData/glove.6B.{50}d.txt')
-    save_dest.mkdir(exist_ok=True)
+    cloud_model_location = '1j8mz4XDb9ydyNEqK-tmgHMEp4fvbXh4d'
+    # save_dest = Path(cwd+f'/eda/data/gloVePath/')
+    # save_dest.mkdir(exist_ok=True)
     
-    f_checkpoint = Path(cwd+f'/eda/data/newData/glove.6B.{50}d.txt')
+    f_checkpoint = Path(cwd+f'/eda/data/glove.6B.50d_word2vec.txt')
 
     if not f_checkpoint.exists():
-        with st.spinner("Downloading model... this may take awhile! \n Don't stop it!"):
+        with st.spinner("Baixando modelo... isso pode levar um tempo! \n Por favor não interrompa"):
             from file_download import download_file_from_google_drive
             download_file_from_google_drive(cloud_model_location, f_checkpoint)
     
@@ -226,19 +226,19 @@ def load_word_embedding():
     Carrega o arquivo GloVE de word embedding
     '''
     ## -------- Caso o arquivo já exista na pasta, deixar comentado --------
-    data_path = Path(cwd+f'/eda/data/newData/glove.6B.{50}d.txt')
+    # data_path = Path(cwd+f'/eda/data/newData/glove.6B.{50}d.txt')
    
 
-    if not data_path.exists():
-        glove_file = datapath(load_model())
-    else:  
-        glove_file = datapath(cwd+f'/eda/data/glove.6B.{50}d.txt')
+    # if not data_path.exists():
+    #     glove_file = datapath(load_model())
+    # else:  
+    #     glove_file = datapath(cwd+f'/eda/data/glove.6B.{50}d.txt')
 
-    tmp_file   = get_tmpfile(cwd+f"/eda/data/newData/glove.6B.{50}d_word2vec.txt")
-    _          = glove2word2vec(glove_file, tmp_file)
+    # tmp_file   = get_tmpfile(cwd+f"/eda/data/newData/glove.6B.{50}d_word2vec.txt")
+    # _          = glove2word2vec(glove_file, tmp_file)
 
-    filename_txt = cwd+f"/eda/data/newData/glove.6B.{50}d_word2vec.txt"
-    response = KeyedVectors.load_word2vec_format(filename_txt)
+    # filename_txt = cwd+f"/eda/data/newData/glove.6B.50d_word2vec.txt"
+    response = KeyedVectors.load_word2vec_format(load_model())
     return response
 
 
