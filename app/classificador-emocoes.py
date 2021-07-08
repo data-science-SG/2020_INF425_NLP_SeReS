@@ -68,6 +68,13 @@ def main():
     para possíveis sinais de depressão. Vale ressaltar a diferença entre análise de emoções e análise de sentimentos. Ao nos referirmos a análise de emoções, 
     estamos focando em algo mais específico, como alegria, tristeza, raiva, surpresa, entre outros. Diferente da análise de sentimentos, que diz respeito ao 
     sentimento expresso pelo texto, normalmente sendo classificados como positivo, negativo e neutro. ''')
+    
+    st.markdown('### Contato')
+    st.markdown('**Link do projeto no GitHub: https://github.com/data-science-SG/2020_INF425_NLP_SeReS**')
+    st.markdown('##### **E-mail para contato:**')
+    st.write('carlosgreinheimer@gmail.com')
+    st.write('eduardasorgetzalves@gmail.com')
+    st.write('fontanads@gmail.com')
 
     st.subheader('Sobre a uso da ferramenta')
     st.write('''Para utilizar a página, você deve inserir algum nome de usuário no campo abaixo. Após isso, clique no botão *Executar algoritmo* logo abaixo. 
@@ -75,11 +82,14 @@ def main():
     st.write('''Fique atento que a busca é realizada buscando tweets em português, portanto tweets em qualquer outro idioma não serão coletados''')
 
     st.subheader('Sobre os resultados')
+    st.markdown('''Primeiramente, vale ressaltar que diversos fatores afetaram o resultado do algoritmo.''')
+    st.markdown('''Um dos grandes fatores que influenciaram foi a coleta dos dados utilizados no treinamento do algoritmo, que foi feita de modo muito limitado devido ao uso da versão gratuita da **API**
+    do **Twitter**, o que nos deixou com um **dataset** muito pequeno para o treinamento. Além disso, as palavras utilizadas no modelo são traduzidas, portanto, muitas palavras acabam por serem perdidas no meio do caminho,
+    visto que várias delas são **gírias**, **abreviações** ou até **traduzidas erroneamente**, fazendo com que as mesmas sejam descartadas.''')
     st.markdown('''Os resultados podem retornar valores **0** ou **1**, sendo, respectivamente, **não** identificado com sintomas depressivos e **identificado** 
     com sintomas depressivos''')
     st.markdown('''**OBS:** Vale lembrar que o resultado não é oficial, o sistema não substitui um profissional da saúde!''')
-
-    createSpaces()
+    st.markdown('----')
 
     username = st.text_input('Insira o usuário:')
     if (st.button('Executar algoritmo')):
